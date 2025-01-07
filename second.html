@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sneaker Cards</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffffff, #d4d4d4);
+            min-width: 100vw;
+            min-height: 100vh;
+        }
+
+        .card-container {
+            width: 800px;
+            display: flex; /* Align children side by side */
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container {
+            width: 50%; /* Set a fixed width for the image container */
+            display: flex;
+            align-items: center; /* Center the image vertically */
+            justify-content: center; /* Center the image horizontally */
+            padding: 24px; /* Top and bottom spacing */
+        }
+
+        .image-container img {
+            width: 100%; /* Adjust width to fit container */
+            height: auto; /* Maintain aspect ratio */
+            max-height: 100%;
+        }
+
+        .content-container {
+            flex: 1; /* Take up remaining space */
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto; /* Enable scrolling for overflow */
+            max-height: 600px; /* Fixed max height for scroll */
+        }
+
+        .card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s; /* Animation transition */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Slightly raise the card */
+            box-shadow: 0 12px 16px rgba(0, 0, 0, 0.2); /* Increase shadow */
+        }
+
+        .card img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .card-details {
+            flex: 1;
+            margin-left: 16px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .card-description,
+        .card-price {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .card-price {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .card-link {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="image-container">
+            <img src="https://uspoloassn.in/cdn/shop/files/1_87f15035-212b-4c28-978d-3e941572709d.jpg?v=1708005331" alt="Sneakers" />
+        </div>
+        <div class="content-container" id="dynamic-cards">
+            <div class="loading">Loading...</div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('query');
+        console.log('Search Query:', query); // Log the search query to the console
+
+        fetch(`https://input-fetcher.findyoursneakers9.workers.dev/?product=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                const dynamicCards = document.getElementById("dynamic-cards");
+                dynamicCards.innerHTML = ''; // Clear loading message
+
+                data.results.forEach(sneaker => {
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+                    card.innerHTML = `
+                        <div class="card-details">
+                            <h3 class="card-title">${sneaker.domain}</h3>
+                            <p class="card-description">Price: ${sneaker.price}</p>
+                        </div>
+                        <div class="card-price">
+                            <a href="${sneaker.url}" class="card-link">View Details</a>
+                        </div>
+                    `;
+                    dynamicCards.appendChild(card);
+                });
+            })
+            .catch(error => {
+                const dynamicCards = document.getElementById("dynamic-cards");
+                dynamicCards.innerHTML = '<div class="loading">Failed to load data</div>';
+                console.error('Error fetching data:', error);
+            });
+    </script>
+</body>
+</html>

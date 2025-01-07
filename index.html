@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYS - Find Your Sneakers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 24px;
+            display: flex;
+            min-width: 100vw;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffffff, #d4d4d4);
+            font-family: 'Open Sans', sans-serif;
+        }
+        .container {
+            width: 1400px;
+            min-height: 800px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .background {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(50%);
+            border-radius: 24px;
+        }
+        .content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px;
+        }
+        .title {
+            font-size: 87px;
+            font-weight: bold;
+            color: white;
+            margin: 0;
+            font-family: 'Lato', sans-serif;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 4px;
+        }
+        .search-container {
+            width: 100%;
+            max-width: 450px;
+            margin-top: 24px;
+        }
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .search-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 18px;
+            font-size: 16px;
+            outline: none;
+        }
+        .search-icons {
+            position: absolute;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        .icon {
+            font-size: 20px;
+            color: #4b5563;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="background"></div>
+        <div class="content">
+            <h1 class="title">FYS</h1>
+            <p class="subtitle">FIND YOUR SNEAKERS</p>
+            <div class="search-container">
+                <form onsubmit="submitQuery(); return false;">
+                    <div class="search-wrapper">
+                        <input type="text" 
+                               class="search-input" 
+                               placeholder="Search your favourite Sneakers"
+                               maxlength="50"
+                               aria-label="Search for sneakers">
+                        <div class="search-icons">
+                            <span class="material-symbols-outlined icon" onclick="submitQuery()">qr_code_scanner</span>
+                            <span class="material-symbols-outlined icon" onclick="submitQuery()">search</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function submitQuery() {
+            const searchQuery = document.querySelector('.search-input').value;
+            window.location.href = `second.html?query=${encodeURIComponent(searchQuery)}`;
+        }
+    </script>
+</body>
+</html>
